@@ -36,27 +36,29 @@ int main() {
     return 0;
 }
 
+# Resolución Paso a Paso
 
-Explicación paso a paso:
+El programa da error al compilarlo en mi ordenador ya que el sistema operativo es Windows y el código está usando librerias que solo funcionan en Linux. Hay que descargarse un programa que haga que funcionen estas librerias en mi máquina. 
 
-Primero, importamos las bibliotecas necesarias para la asignación de memoria y la creación de procesos.
+### 1. Instalación de Ubuntu a través del terminal en Clion
+    Después de la instalación, me pide crear un usuario y contraseña y validar esa contraseña. 
 
-Creamos una constante SIZE para determinar el tamaño de la región de memoria compartida que queremos asignar.
+### 2. Clonación del repositorio de Github:
+    comando: git clone https://github.com/bgarrjar/Gestion_Memoria_Beatriz_Garrido.git
 
-En la función principal, llamamos a la función mmap() para asignar una región de memoria que pueda ser compartida entre procesos. Los argumentos de esta función son los siguientes:
+### 3. Actualización de la maquina virtual:
+    comando: sudo apt update
 
-NULL: Le estamos pidiendo al sistema operativo que elija la dirección de inicio de la región de memoria.
-SIZE: Es el tamaño de la región que queremos asignar.
-PROT_READ|PROT_WRITE: Estamos indicando que la región de memoria puede ser leída y escrita.
-MAP_SHARED|MAP_ANONYMOUS: Estas banderas indican que la región de memoria será compartida entre procesos y que no estará respaldada por ningún archivo.
--1: Este argumento sería el descriptor de archivo si la memoria estuviera respaldada por un archivo, pero como usamos MAP_ANONYMOUS, podemos poner -1.
-0: Este sería el desplazamiento si la memoria estuviera respaldada por un archivo. Como no es el caso, ponemos 0.
-Comprobamos si la asignación fue exitosa. Si mmap() devuelve MAP_FAILED, significa que hubo un error.
+### 4. Instalación compilador de C:
+    Al contrario que en CLion, aquí me tengo que instalar el compilador gcc para que el programa se pueda compilar. 
+    comando: sudo apt install gcc
 
-Creamos un nuevo proceso utilizando la función fork(). Esta función devuelve el PID del proceso hijo al proceso padre y 0 al proceso hijo.
+### 5. Creación del ejecutable para poder ejecutar el main.c:
+    Comando: gcc main.c -o main
+    uso el comando ls para ver que está creado. 
 
-Luego, comprobamos el valor devuelto por fork(). Si es menor que 0, hubo un error al crear el nuevo proceso.
+### 6. Comprobación de que el ejecutable funciona: 
+    Comando: ./ main
+    Con este comando se ejecuta el programa obteniendo en la pantalla el siguiente mensaje: Child reads: Hello, child process!
 
-Si el valor devuelto es 0, significa que estamos en el proceso hijo. En este caso, leemos y mostramos la memoria compartida y luego liberamos la memoria utilizando la función munmap().
 
-Si el valor devuelto por fork() es mayor que 0, significa que estamos en el proceso padre. En este caso, escribimos en la memoria compartida, esperamos a que el proceso hijo termine y luego liberamos la memoria.
